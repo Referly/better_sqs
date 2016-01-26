@@ -25,6 +25,10 @@ module BetterSqs
       @configuration ||= Configuration.new
     end
 
+    def configured?
+      !@configuration.nil?
+    end
+
     def logger
       LincolnLogger.logger
     end

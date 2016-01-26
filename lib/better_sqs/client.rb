@@ -3,6 +3,12 @@ module BetterSqs
   # A class that wraps the aws sdk v2 SQS client to reduce interface complexity
   class Client
     attr_accessor :sqs
+
+    def initialize
+      # if BetterSqs has not been configured then run the default configuration
+      BetterSqs.configure unless BetterSqs.configured?
+    end
+
     # Push a message onto a queue
     #
     # @param queue_name [String, Symbol] the name of the queue that the message should pushed onto
