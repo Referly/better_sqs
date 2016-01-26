@@ -8,7 +8,7 @@ module BetterSqs
                   :aws_secret_access_key
 
     def initialize
-      @sqs_message_deferral_seconds = 5
+      @sqs_message_deferral_seconds = 60
       @aws_access_key_id      = ENV["AWS_ACCESS_KEY_ID"]
       @aws_secret_access_key  = ENV["AWS_SECRET_ACCESS_KEY"]
       @region                 = ENV["AWS_REGION"]
