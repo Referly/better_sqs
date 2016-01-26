@@ -32,7 +32,7 @@ module BetterSqs
 
     # Defer for sqs_message_deferral_seconds the message, before it will be made visible in sqs
     def defer_retry
-      BetterSqs.logger.warn "Deferring retry processing of the message for #{BetterSqs.sqs_message_deferral_seconds} in SQS."
+      BetterSqs.logger.warn "Deferring retry processing of the message for #{BetterSqs.configuration.sqs_message_deferral_seconds} in SQS."
       queue_client.defer_retry self
     end
 
