@@ -1,5 +1,7 @@
 require "lincoln_logger"
 require "better_sqs/configuration"
+require "better_sqs/client"
+require "better_sqs/message"
 module BetterSqs
   class << self
     # Allows the user to set configuration options
@@ -12,6 +14,7 @@ module BetterSqs
       @configuration = nil if opts.key?(:reset) && opts[:reset]
       yield(configuration) if block_given?
 
+      configuration.configure_aws
       configuration
     end
 
