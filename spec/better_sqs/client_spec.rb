@@ -76,4 +76,19 @@ describe BetterSqs::Client do
       expect(subject.url_for_queue queue_name).to eq sqs.queue_url
     end
   end
+
+  describe "#defer_retry" do
+    it "increases the visibility timeout for the message" do
+      message_to_defer = BetterSqs::Message.new queue_client: subject,
+                                                queue:        queue_name,
+                                                sqs_message:  sqs_message
+
+      expect(sqs).
+        to receive(:change_message_visibility).
+        with(queue_url:          sqs.url_for_queue(queue_name),
+             receipt_handle:     message_to_defer.receipt_handle,
+             visibility_timeout: BetterSqs.configuration.sqs_message_deferral_seconds)
+      subject.defer_retry message_to_defer
+    end
+  end
 end

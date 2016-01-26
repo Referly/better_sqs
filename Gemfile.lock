@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    better_sqs (0.1.0.dev4)
+    better_sqs (0.1.0.dev7)
       aws-sdk (~> 2)
       lincoln_logger (~> 1.0)
 

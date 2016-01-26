@@ -42,4 +42,13 @@ describe BetterSqs::Message do
       subject.delete
     end
   end
+
+  describe "#defer_retry" do
+    it "increases the visibility timeout for the message" do
+      expect(queue_client).to receive(:defer_retry).with(subject).and_return Aws::EmptyStructure
+      subject.queue_client = queue_client
+
+      subject.defer_retry
+    end
+  end
 end
