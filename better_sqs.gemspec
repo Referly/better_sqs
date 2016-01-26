@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "better_sqs"
-  s.version     = "0.1.0.dev6"
+  s.version     = "0.1.0.dev7"
   s.license     = "MIT"
   s.date        = "2016-01-26"
   s.summary     = "A more idiomatic interface to SQS."

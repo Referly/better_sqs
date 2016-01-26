@@ -43,7 +43,7 @@ module BetterSqs
     def defer_retry(message)
       sqs.change_message_visibility queue_url:          url_for_queue(message.queue),
                                     receipt_handle:     message.receipt_handle,
-                                    visibility_timeout: Configuration.sqs_message_deferral_seconds
+                                    visibility_timeout: BetterSqs.configuration.sqs_message_deferral_seconds
     end
 
     # Get the existing or create a new instances of the SQS client
