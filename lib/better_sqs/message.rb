@@ -22,6 +22,7 @@ module BetterSqs
     def message_body
       sqs_message.body
     end
+    alias_method :body, :message_body
 
     # Delete self from the SQS queue
     def delete
