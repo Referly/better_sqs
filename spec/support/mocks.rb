@@ -12,26 +12,36 @@ end
 
 module SqsMocks
   class MockQueue
-    attr_accessor :queue_name, :queue_url
+    attr_accessor :queue_name, :queue_url, :messages
+
+    def initialize
+      @messages = []
+    end
   end
 
   class MockClient
-    attr_accessor :queue_name, :queue_url
+    attr_accessor :queue_name, :queue_url, :current_queue
 
     def initialize(queue_url)
       @queue_url = queue_url
     end
 
     def create_queue(queue_name)
+      return @current_queue if queue_name.to_s == @queue_name.to_s
       @queue_name = queue_name
       q = MockQueue.new
       q.queue_name = queue_name
       q.queue_url = queue_url
+      @current_queue = q
       q
     end
 
     def url_for_queue(_queue_name)
       @queue_url
+    end
+
+    def send_message(queue_url: nil, message_body: nil)
+      current_queue.messages << message_body
     end
   end
 end

@@ -21,6 +21,44 @@ puts message.message_body
 message.delete
 ```
 
+If you prefer you can interact with a Queue directly for enqueue and dequeue operations
+
+```ruby
+require "better_sqs"
+
+better = BetterSqs::Client.new
+queue = better.queue "better_sqs_dev_queue"
+queue.push "You pushed the message successfully!"
+message = queue.reserve
+
+puts message.message_body
+message.delete
+```
+
+### Inspecting a queue
+
+BetterSqs makes it easy to check on the attributes of a SQS queue.
+
+```ruby
+require "better_sqs"
+
+better = BetterSqs::Client.new
+queue = better.queue("better_sqs_dev_queue")
+queue.approximate_number_of_messages
+queue.approximate_number_of_messages_not_visible
+queue.visibility_timeout
+queue.created_timestamp
+queue.last_modified_timestamp
+queue.policy
+queue.maximum_message_size
+queue.message_retention_period
+queue.queue_arn
+queue.approximate_number_of_messages_delayed
+queue.delay_seconds
+queue.receive_message_wait_time_seconds
+queue.redrive_policy
+```
+
 ## Configuration
 
 To configure BetterSqs use the configuration block pattern

@@ -60,5 +60,13 @@ module BetterSqs
     def url_for_queue(queue_name)
       sqs.create_queue(queue_name: queue_name).queue_url
     end
+
+    # Get a BetterSqs::Queue instance
+    #
+    # @param queue_name [String, Symbol] the name of the SQS queue
+    # @return [BetterSqs::Queue] the requested Queue instance
+    def queue(queue_name)
+      Queue.new self, queue_name
+    end
   end
 end

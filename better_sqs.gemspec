@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
     "https://github.com/Referly/better_sqs"
   s.add_runtime_dependency "lincoln_logger", "~> 1.0"                   # Mattermark gem
   s.add_runtime_dependency "aws-sdk", "~> 2"                            # Apache2 https://github.com/aws/aws-sdk-ruby/blob/master/LICENSE.txt
+  s.add_runtime_dependency "activesupport"
   s.add_development_dependency "rspec", "~> 3.2"                        # MIT - @link https://github.com/rspec/rspec/blob/master/License.txt
   s.add_development_dependency "byebug", "~> 3.5"                       # BSD (content is BSD) https://github.com/deivid-rodriguez/byebug/blob/master/LICENSE
   s.add_development_dependency "simplecov", "~> 0.10"                   # MIT - @link https://github.com/colszowka/simplecov/blob/master/MIT-LICENSE
