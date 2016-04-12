@@ -1,3 +1,5 @@
+require "securerandom"
+
 def mock_queue_client
   double "QueueClient"
 end
@@ -19,33 +21,40 @@ module SqsMocks
     end
   end
 
-  class MockClient
-    attr_accessor :queue_name, :queue_url, :current_queue
-
-    def initialize(queue_url)
-      @queue_url = queue_url
+  class MockQueues < Hash
+    def [](key)
+      existing_val = super
+      return existing_val if existing_val
+      self[key] = create_queue queue_name: key
     end
 
-    def create_queue(queue_name)
-      return @current_queue if queue_name.to_s == @queue_name.to_s
-      @queue_name = queue_name
+    def create_queue(queue_name: nil)
       q = MockQueue.new
       q.queue_name = queue_name
+      queue_url = SecureRandom.hex(10)
       q.queue_url = queue_url
-      @current_queue = q
       q
     end
+  end
 
-    def url_for_queue(_queue_name)
-      @queue_url
+  class MockClient
+    attr_accessor :queues
+
+    def initialize
+      @queues = MockQueues.new
+    end
+
+    def create_queue(queue_name: nil)
+      queues[queue_name]
     end
 
     def send_message(queue_url: nil, message_body: nil)
-      current_queue.messages << message_body
+      queue = queues.select { |_queue_name, q| q.queue_url == queue_url }.values.first
+      queue.messages << message_body
     end
   end
 end
 
-def mock_aws_sqs_client(queue_url: nil)
-  SqsMocks::MockClient.new queue_url
+def mock_aws_sqs_client
+  SqsMocks::MockClient.new
 end

@@ -1,5 +1,6 @@
 require "active_support/inflector"
 module BetterSqs
+  # A Class for interacting with an SQS queue as an OOP style entity
   class Queue
     attr_accessor :better_client,
                   :queue_name
@@ -26,24 +27,24 @@ module BetterSqs
     end
 
     QUEUE_ATTRIBUTES = [
-        :approximate_number_of_messages,
-        :approximate_number_of_messages_not_visible,
-        :visibility_timeout,
-        :created_timestamp,
-        :last_modified_timestamp,
-        :policy,
-        :maximum_message_size,
-        :message_retention_period,
-        :queue_arn,
-        :approximate_number_of_messages_delayed,
-        :delay_seconds,
-        :receive_message_wait_time_seconds,
-        :redrive_policy
+      :approximate_number_of_messages,
+      :approximate_number_of_messages_not_visible,
+      :visibility_timeout,
+      :created_timestamp,
+      :last_modified_timestamp,
+      :policy,
+      :maximum_message_size,
+      :message_retention_period,
+      :queue_arn,
+      :approximate_number_of_messages_delayed,
+      :delay_seconds,
+      :receive_message_wait_time_seconds,
+      :redrive_policy,
     ]
     QUEUE_ATTRIBUTES.each do |queue_attribute|
       define_method queue_attribute do
-        resp = better_client.sqs.get_queue_attributes queue_url: better_client.url_for_queue(queue_name),
-                                               attribute_names: [queue_attribute.to_s.camelize]
+        resp = better_client.sqs.get_queue_attributes queue_url:       better_client.url_for_queue(queue_name),
+                                                      attribute_names: [queue_attribute.to_s.camelize]
         resp.attributes[queue_attribute.to_s.camelize]
       end
     end
