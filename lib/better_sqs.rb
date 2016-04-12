@@ -2,6 +2,7 @@ require "lincoln_logger"
 require "better_sqs/configuration"
 require "better_sqs/client"
 require "better_sqs/message"
+require "better_sqs/queue"
 module BetterSqs
   class << self
     # Allows the user to set configuration options
