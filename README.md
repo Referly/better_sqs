@@ -94,6 +94,4 @@ The feature does offer one (possibly) useful / interesting aspect
 For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.
 ```
 
-Keep in mind that this does not guarantee FIFO for dequeue operations.
-
 When we need to enqueue a large number of messages we've had decent luck using https://github.com/grosser/parallel
