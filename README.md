@@ -80,3 +80,20 @@ BetterSqs.configure do |config|
     # ENV["AWS_SECRET_ACCESS_KEY"]
 end
 ```
+
+## Batch enqueuing
+
+The AWS SDK does expose the ability to batch insert messages to an SQS queue. But it imposes some rather ridiculous restrictions on this feature. Specificially:
+
+1. Each batch is limited to up to 10 messages
+2. The sum of the message lengths cannot exceed 256 KBs (the normal per message limit is 256KB)
+
+The feature does offer one (possibly) useful / interesting aspect
+
+```
+For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.
+```
+
+Keep in mind that this does not guarantee FIFO for dequeue operations.
+
+When we need to enqueue a large number of messages we've had decent luck using https://github.com/grosser/parallel
