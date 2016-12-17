@@ -34,7 +34,9 @@ describe BetterSqs::Client do
     it "retrieves a message from SQS" do
       expect(sqs).
         to receive(:receive_message).
-        with(queue_url: sqs.queues[queue_name].queue_url, max_number_of_messages: 1).
+        with(hash_including(
+               queue_url:              sqs.queues[queue_name].queue_url,
+               max_number_of_messages: 1)).
         and_return receive_message_response
 
       subject.reserve queue_name
