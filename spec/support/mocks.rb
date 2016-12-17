@@ -69,7 +69,7 @@ module SqsMocks
     end
 
     # If we get to the point of needing to mock visiblity then this approximation will not be adequate
-    def receive_message(queue_url: nil, max_number_of_messages: nil)
+    def receive_message(queue_url: nil, max_number_of_messages: nil, attribute_names: nil)
       queue = queue_by_url queue_url
       r = MockResponse.new
       r.messages = Array(queue.messages.shift max_number_of_messages) if queue.messages.any?

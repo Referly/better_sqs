@@ -14,9 +14,22 @@ module BetterSqs
     # @param queue_name [String, Symbol] the name of the queue that the message should pushed onto
     # @param message_body [String] the message as it will be pushed onto the queue, no serialization occurs as
     #  part of this method. You need to encode or serialize your object to a string before sending it to this method
+    # @param deduplication_id [String] if you are using FIFO queue mode and you are not using content based
+    #  deduplication, then you'll need to set this value so that if you message is enqueued more than once
+    #  SQS can prevent the duplicates from being delivered for the duration of the deduplication period
+    # @param group_id [String] if you are using FIFO queue mode you need to specify a group id; for a given
+    #  group_id all messages will be received in order, if you are using multiple consumers and only need
+    #  ordering within a subset of your data you can use more than one group_id for the queue and then
+    #  order is guaranteed only for a particular grouping
     # @return [Types::SendMessageResult] the sent message object returned from s3
-    def push(queue_name, message_body)
-      sqs.send_message(queue_url: url_for_queue(queue_name), message_body: message_body)
+    def push(queue_name, message_body, deduplication_id: nil, group_id: nil)
+      opts = {
+        queue_url:    url_for_queue(queue_name),
+        message_body: message_body,
+      }
+      opts[:message_deduplication_id] = deduplication_id if deduplication_id
+      opts[:message_group_id] = group_id if group_id
+      sqs.send_message opts
     end
 
     # Reserve a message from the specified queue
@@ -24,7 +37,9 @@ module BetterSqs
     # @param queue_name [String, Symbol] the name of the SQS queue to reserve a message from
     # @return [Messages::Sqs, NilClass] the message retrieved from the queue
     def reserve(queue_name)
-      resp = sqs.receive_message(queue_url: url_for_queue(queue_name), max_number_of_messages: 1)
+      resp = sqs.receive_message queue_url:              url_for_queue(queue_name),
+                                 max_number_of_messages: 1,
+                                 attribute_names:        ["All"]
       return nil unless resp.messages.any?
       Message.new queue_client: self, queue: queue_name, sqs_message: resp.messages.first
     end
